@@ -1,0 +1,52 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="wrap_content"
+    android:layout_height="40sp"
+    tools:parentTag="RelativeLayout">
+
+    <TextView
+        android:id="@+id/selected_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="30sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/dark_tags"
+        android:gravity="center"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:text="selected"
+        android:textColor="#ffff"
+        android:visibility="visible">
+
+    </TextView>
+
+
+    <EditText
+        android:id="@+id/search_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_toLeftOf="@+id/cancel_search"
+        android:layout_toRightOf="@+id/selected_tag"
+        android:background="@android:color/transparent"
+        android:hint="Search Here..."
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:paddingLeft="5sp"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/cancel_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:padding="10sp"
+        android:src="@drawable/ic_close_grey_700_24dp"
+        android:visibility="gone" />
+
+</merge>
+
