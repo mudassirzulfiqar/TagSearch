@@ -1,4 +1,4 @@
-@file:JvmName("AndroidUtils")
+@file:JvmName("Utils")
 
 package com.moodi.tagsearch.util
 
