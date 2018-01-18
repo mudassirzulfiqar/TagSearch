@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TagSearch">
+        <attr name="tagColor" format="color" />
+        <attr name="defaultTagText" format="string" localization="suggested" />
+        <attr name="tagRadius" format="float" />
+        <attr name="searchHint" format="string" localization="suggested" />
+    </declare-styleable>
+
+</resources>

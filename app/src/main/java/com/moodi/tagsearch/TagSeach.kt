@@ -3,8 +3,10 @@ package com.moodi.tagsearch
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.support.annotation.ColorInt
+import android.support.v7.widget.CardView
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,16 +18,18 @@ import android.widget.TextView
 import com.moodi.tagsearch.util.TagCallback
 import com.moodi.tagsearch.util.background
 
+
 /**
  * Created by moodi on 22/07/2017.
  */
 
 class TagSearch @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : RelativeLayout(context, attrs, defStyleAttr), TextWatcher {
+) : CardView(context, attrs, defStyleAttr), TextWatcher {
 
 
     override fun afterTextChanged(s: Editable?) {
+        TransitionManager.beginDelayedTransition(innerArea)
         if (s?.isNotEmpty()!!) {
             mCancelButton?.visibility = VISIBLE
         } else {
@@ -45,6 +49,7 @@ class TagSearch @JvmOverloads constructor(
     var mSearchViewEditText: EditText? = null
     var mTagListeners: TagCallback? = null
     var mCancelButton: ImageView? = null
+    var innerArea: RelativeLayout? = null
 
     //default Properties
     var mTagRadius: Float = 1f
@@ -57,6 +62,11 @@ class TagSearch @JvmOverloads constructor(
     var mHint = "Search any thing";
 
     init {
+//card_view:cardUseCompatPadding="true"
+//        card_view:cardElevation="4dp"
+//        card_view:cardCornerRadius="3dp"
+        elevation = 4f
+        useCompatPadding = true
 
         val mainView = LayoutInflater.from(context)
                 .inflate(R.layout.search_view_layout, this, true)
@@ -64,6 +74,7 @@ class TagSearch @JvmOverloads constructor(
         mSelectedTag = mainView.findViewById(R.id.selected_tag) as TextView
         mCancelButton = mainView.findViewById(R.id.cancel_search) as ImageView
         mSearchViewEditText = mainView.findViewById(R.id.search_text_view) as EditText
+        innerArea = mainView.findViewById(R.id.inner) as RelativeLayout
 
         setTagColor(mTagColor)
         addTagClickListener()
@@ -73,6 +84,22 @@ class TagSearch @JvmOverloads constructor(
         addSearchButtonListener()
 
         mSearchViewEditText?.addTextChangedListener(this)
+
+
+        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.TagSearch, 0, 0)
+
+        try {
+
+            setTagText(a.getString(R.styleable.TagSearch_defaultTagText))
+            setSearchHint(a.getString(R.styleable.TagSearch_searchHint))
+            setTagColor(a.getColor(R.styleable.TagSearch_tagColor, 0))
+            setTagRadius(a.getFloat(R.styleable.TagSearch_tagRadius, 0F))
+
+        } finally {
+            a.recycle()
+        }
+
+
     }
 
     private fun addCancelListener() {
@@ -84,6 +111,9 @@ class TagSearch @JvmOverloads constructor(
             if (keyCode == KeyEvent.KEYCODE_DEL) {
                 mTagListeners?.onTagRemoved(mSelectedTag?.text)
                 mSelectedTag?.text = ""
+
+                TransitionManager.beginDelayedTransition(innerArea)
+
                 mSelectedTag?.visibility = GONE
             }
             false
@@ -133,7 +163,7 @@ class TagSearch @JvmOverloads constructor(
 
     fun setTagText(tag: String) {
         mSelectedTagText = tag
-
+        TransitionManager.beginDelayedTransition(innerArea)
         mSelectedTag?.visibility = VISIBLE
         mSelectedTag?.text = tag
         this.mTagListeners?.onTagAdded(mSelectedTag?.text)

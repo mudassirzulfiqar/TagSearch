@@ -3,14 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context="com.moodi.tagsearch.MainActivity">
 
-    <com.moodi.tagsearch.TagSearch
+    <com.moodi.tagsearch.TagSearch xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        app:defaultTagText="Android"
+        app:searchHint="Hi there"
+        app:tagColor="@color/colorAccent"
+        app:tagRadius="5">
 
     </com.moodi.tagsearch.TagSearch>
+
+    <Button
+        android:id="@+id/add_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search"
+        android:text="add Tag" />
 
 
 </RelativeLayout>
