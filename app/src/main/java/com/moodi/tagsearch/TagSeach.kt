@@ -60,13 +60,11 @@ class TagSearch @JvmOverloads constructor(
     var mTagDrawable = GradientDrawable()
     var mTextSize = 12.0F;
     var mHint = "Search any thing";
+    var mSearchBarRadius = 0f;
 
     init {
-//card_view:cardUseCompatPadding="true"
-//        card_view:cardElevation="4dp"
-//        card_view:cardCornerRadius="3dp"
-        elevation = 4f
         useCompatPadding = true
+        elevation = 4f
 
         val mainView = LayoutInflater.from(context)
                 .inflate(R.layout.search_view_layout, this, true)
@@ -187,8 +185,9 @@ class TagSearch @JvmOverloads constructor(
                 .cornerRadius = mTagRadius
     }
 
-
-    fun initialize() {
+    fun setSearchBarRadius(radius: Float) {
+        this.mSearchBarRadius = radius
+        setRadius(mSearchBarRadius)
 
     }
 

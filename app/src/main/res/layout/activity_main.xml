@@ -10,7 +10,7 @@
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5sp"
+        android:layout_margin="5sp"
         app:defaultTagText="Android"
         app:searchHint="Hi there"
         app:tagColor="@color/colorAccent"
