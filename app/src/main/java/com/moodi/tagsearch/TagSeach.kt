@@ -32,7 +32,6 @@ class TagSearch @JvmOverloads constructor(
 
 
     override fun afterTextChanged(s: Editable?) {
-        TransitionManager.beginDelayedTransition(innerArea)
         if (s?.isNotEmpty()!!) {
             mCancelButton?.visibility = VISIBLE
         } else {
@@ -160,14 +159,17 @@ class TagSearch @JvmOverloads constructor(
     }
 
     private fun detectRemoveKeyEvent() {
-        mSearchViewEditText?.setOnKeyListener({ _, keyCode, _ ->
+        mSearchViewEditText?.setOnKeyListener({ view, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_DEL) {
-                mTagListeners?.onTagRemoved(mSelectedTag?.text)
-                mSelectedTag?.text = ""
 
-                doTransition()
-                mSelectedTag?.visibility = GONE
-                tagArea?.visibility = VISIBLE
+                if (mSearchViewEditText?.text?.length == 0) {
+                    mTagListeners?.onTagRemoved(mSelectedTag?.text)
+                    mSelectedTag?.text = ""
+
+                    doTransition()
+                    mSelectedTag?.visibility = GONE
+                    tagArea?.visibility = VISIBLE
+                }
             }
             false
         })
