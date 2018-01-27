@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TagSearch</string>
+    <string name="tags_label">Trendings</string>
 </resources>

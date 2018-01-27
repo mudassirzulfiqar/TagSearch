@@ -4,17 +4,20 @@ import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.support.annotation.ColorInt
 import android.support.v7.widget.CardView
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.TransitionManager
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
+import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
+import com.moodi.tagsearch.ui.TagsAdapter
 import com.moodi.tagsearch.util.TagCallback
 import com.moodi.tagsearch.util.background
 
@@ -50,6 +53,9 @@ class TagSearch @JvmOverloads constructor(
     var mTagListeners: TagCallback? = null
     var mCancelButton: ImageView? = null
     var innerArea: RelativeLayout? = null
+    var recyclerView: RecyclerView? = null
+    var tagArea: RelativeLayout? = null
+    var animatorView: LinearLayout? = null
 
     //default Properties
     var mTagRadius: Float = 1f
@@ -73,6 +79,9 @@ class TagSearch @JvmOverloads constructor(
         mCancelButton = mainView.findViewById(R.id.cancel_search) as ImageView
         mSearchViewEditText = mainView.findViewById(R.id.search_text_view) as EditText
         innerArea = mainView.findViewById(R.id.inner) as RelativeLayout
+        recyclerView = mainView.findViewById(R.id.recycler) as RecyclerView
+        tagArea = mainView.findViewById(R.id.tag_view) as RelativeLayout
+        animatorView = mainView.findViewById(R.id.whole_animator) as LinearLayout
 
         setTagColor(mTagColor)
         addTagClickListener()
@@ -80,6 +89,8 @@ class TagSearch @JvmOverloads constructor(
         addCancelListener()
         detectRemoveKeyEvent()
         addSearchButtonListener()
+
+        initRecyclerView(context)
 
         mSearchViewEditText?.addTextChangedListener(this)
 
@@ -100,6 +111,50 @@ class TagSearch @JvmOverloads constructor(
 
     }
 
+    private fun initRecyclerView(context: Context) {
+
+
+        val adapter
+                = TagsAdapter(context, arrayListOf(
+                "Android", "Code", "Android", "Code", "Android", "Code", "Android", "Code"
+        ), {
+            setTagText(it)
+//            doTransition()
+            tagArea?.visibility = View.GONE
+        })
+
+        with(recyclerView) {
+
+            this?.addItemDecoration(
+                    SpacingItemDecoration(resources.getDimensionPixelOffset(R.dimen.item_space), resources.getDimensionPixelOffset(R.dimen.item_space)))
+
+            ChipsLayoutManager.newBuilder(context)
+                    //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
+                    .setChildGravity(Gravity.CENTER)
+                    //whether RecyclerView can scroll. TRUE by default
+                    .setScrollingEnabled(true)
+                    //set maximum views count in a particular row
+                    .setMaxViewsInRow(10)
+                    //set gravity resolver where you can determine gravity for item in position.
+                    //This method have priority over previous one
+                    .setGravityResolver { Gravity.CENTER }
+                    //you are able to break row due to your conditions. Row breaker should return true for that views
+                    //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL. HORIZONTAL by default
+                    .setOrientation(ChipsLayoutManager.HORIZONTAL)
+                    // row strategy for views in completed row, could be STRATEGY_DEFAULT, STRATEGY_FILL_VIEW,
+                    //STRATEGY_FILL_SPACE or STRATEGY_CENTER
+                    .setRowStrategy(ChipsLayoutManager.STRATEGY_FILL_VIEW)
+                    .build().let {
+                this?.layoutManager = it
+            }
+
+
+            this?.adapter = adapter
+        }
+
+
+    }
+
     private fun addCancelListener() {
         mCancelButton?.setOnClickListener { mSearchViewEditText?.setText("") }
     }
@@ -110,9 +165,9 @@ class TagSearch @JvmOverloads constructor(
                 mTagListeners?.onTagRemoved(mSelectedTag?.text)
                 mSelectedTag?.text = ""
 
-                TransitionManager.beginDelayedTransition(innerArea)
-
+                doTransition()
                 mSelectedTag?.visibility = GONE
+                tagArea?.visibility = VISIBLE
             }
             false
         })
@@ -161,7 +216,6 @@ class TagSearch @JvmOverloads constructor(
 
     fun setTagText(tag: String) {
         mSelectedTagText = tag
-        TransitionManager.beginDelayedTransition(innerArea)
         mSelectedTag?.visibility = VISIBLE
         mSelectedTag?.text = tag
         this.mTagListeners?.onTagAdded(mSelectedTag?.text)
@@ -193,5 +247,8 @@ class TagSearch @JvmOverloads constructor(
 
     //extention Funtions
 
+    fun doTransition() {
+        TransitionManager.beginDelayedTransition(animatorView)
+    }
 
 }

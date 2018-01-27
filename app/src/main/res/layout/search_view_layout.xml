@@ -6,69 +6,103 @@
     android:layout_height="wrap_content"
     tools:parentTag="android.support.v7.widget.CardView">
 
-    <RelativeLayout
-        android:id="@+id/inner"
-        android:layout_width="wrap_content"
-        android:layout_height="50sp"
-        android:gravity="center"
-        android:padding="10sp">
 
+    <LinearLayout
+        android:id="@+id/whole_animator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/search_imageview"
-
+        <RelativeLayout
+            android:id="@+id/inner"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5sp"
-            android:src="@drawable/ic_search_grey_700_24dp" />
-
-
-        <TextView
-            android:id="@+id/selected_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="15sp"
-            android:layout_toEndOf="@+id/search_imageview"
-            android:layout_toRightOf="@+id/search_imageview"
-            android:background="@drawable/dark_tags"
+            android:layout_height="50sp"
             android:gravity="center"
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp"
-            android:text="selected"
-            android:textColor="#ffff"
-            android:visibility="visible">
-
-        </TextView>
+            android:padding="10sp">
 
 
-        <EditText
-            android:id="@+id/search_text_view"
+            <ImageView
+                android:id="@+id/search_imageview"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5sp"
+                android:src="@drawable/ic_search_grey_700_24dp" />
+
+
+            <TextView
+                android:id="@+id/selected_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15sp"
+                android:layout_toEndOf="@+id/search_imageview"
+                android:layout_toRightOf="@+id/search_imageview"
+                android:background="@drawable/dark_tags"
+                android:gravity="center"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:text="selected"
+                android:textColor="#ffff"
+                android:visibility="visible">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/search_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10sp"
+                android:layout_toEndOf="@+id/selected_tag"
+                android:layout_toLeftOf="@+id/cancel_search"
+                android:layout_toRightOf="@+id/selected_tag"
+                android:layout_toStartOf="@+id/cancel_search"
+                android:background="@android:color/transparent"
+                android:hint="Search Here..."
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:paddingLeft="5sp"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+            <ImageView
+
+                android:id="@+id/cancel_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5sp"
+                android:src="@drawable/ic_close_grey_700_24dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tag_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
+            android:layout_height="100sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp"
-            android:layout_toEndOf="@+id/selected_tag"
-            android:layout_toLeftOf="@+id/cancel_search"
-            android:layout_toRightOf="@+id/selected_tag"
-            android:layout_toStartOf="@+id/cancel_search"
-            android:background="@android:color/transparent"
-            android:hint="Search Here..."
-            android:imeOptions="actionSearch"
-            android:maxLines="1"
-            android:paddingLeft="5sp"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            android:visibility="gone">
 
-        <ImageView
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tags_label"
+                android:textStyle="normal" />
 
-            android:id="@+id/cancel_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5sp"
-            android:src="@drawable/ic_close_grey_700_24dp"
-            android:visibility="gone" />
-    </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </merge>
 
