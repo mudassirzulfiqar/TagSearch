@@ -1,7 +1,7 @@
 # Tag Search Searchbar Android
 
 
-###Customization
+### Customization
 
 - Truly built on material design concept .
 - Insert a Tag in material design search bar to enhance the filter.
