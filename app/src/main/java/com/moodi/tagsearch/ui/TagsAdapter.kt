@@ -36,4 +36,10 @@ class TagsAdapter(val context: Context, var tags: ArrayList<String>, var clickLi
         var tagText: TextView? = itemView.findViewById(R.id.tag) as TextView
 
     }
+
+    fun addList(hotTags: ArrayList<String>) {
+        tags.clear()
+        tags.addAll(hotTags)
+        notifyDataSetChanged()
+    }
 }

@@ -7,12 +7,14 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AnticipateOvershootInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
@@ -55,9 +57,13 @@ class TagSearch @JvmOverloads constructor(
     var recyclerView: RecyclerView? = null
     var tagArea: RelativeLayout? = null
     var animatorView: LinearLayout? = null
+    var tagTitle: TextView? = null
 
     //default Properties
     var mTagRadius: Float = 1f
+    var hotTagsList: ArrayList<String> = ArrayList()
+    var adapter: TagsAdapter? = null
+
 
     @ColorInt
     var mTagColor = R.color.colorAccent
@@ -75,6 +81,7 @@ class TagSearch @JvmOverloads constructor(
                 .inflate(R.layout.search_view_layout, this, true)
 
         mSelectedTag = mainView.findViewById(R.id.selected_tag) as TextView
+        tagTitle = mainView.findViewById(R.id.label) as TextView
         mCancelButton = mainView.findViewById(R.id.cancel_search) as ImageView
         mSearchViewEditText = mainView.findViewById(R.id.search_text_view) as EditText
         innerArea = mainView.findViewById(R.id.inner) as RelativeLayout
@@ -113,12 +120,8 @@ class TagSearch @JvmOverloads constructor(
     private fun initRecyclerView(context: Context) {
 
 
-        val adapter
-                = TagsAdapter(context, arrayListOf(
-                "Android", "Code", "Android", "Code", "Android", "Code", "Android", "Code"
-        ), {
+        adapter = TagsAdapter(context, hotTagsList, {
             setTagText(it)
-//            doTransition()
             tagArea?.visibility = View.GONE
         })
 
@@ -164,10 +167,10 @@ class TagSearch @JvmOverloads constructor(
 
                 if (mSearchViewEditText?.text?.length == 0) {
                     mTagListeners?.onTagRemoved(mSelectedTag?.text)
-                    mSelectedTag?.text = ""
 
-                    doTransition()
+//                    doTransition()
                     mSelectedTag?.visibility = GONE
+                    mSelectedTag?.text = ""
                     tagArea?.visibility = VISIBLE
                 }
             }
@@ -175,6 +178,12 @@ class TagSearch @JvmOverloads constructor(
         })
     }
 
+
+    fun addTags(hotTags: ArrayList<String>) {
+        adapter?.addList(hotTags);
+        this.hotTagsList = hotTags
+
+    }
 
     fun addTagCallBack(tagListeners: TagCallback) {
         this.mTagListeners = tagListeners
@@ -247,10 +256,28 @@ class TagSearch @JvmOverloads constructor(
 
     }
 
+    fun setTagTitle(tagTitle: String) {
+        this.tagTitle?.text = tagTitle
+    }
+
     //extention Funtions
 
     fun doTransition() {
-        TransitionManager.beginDelayedTransition(animatorView)
+        val changeBounds = ChangeBounds()
+
+        // Set the transition start delay
+        changeBounds.startDelay = 300
+
+        // Set the transition interpolator
+        changeBounds.interpolator = AnticipateOvershootInterpolator()
+
+        // Specify the transition duration
+        changeBounds.duration = 100
+
+        TransitionManager
+                .beginDelayedTransition(
+                        innerArea,
+                        changeBounds)
     }
 
 }

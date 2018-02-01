@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.moodi.tagsearch.util.addCallbacks
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +14,10 @@ class MainActivity : AppCompatActivity() {
 
         val searchView = findViewById(R.id.search) as TagSearch
 
+        val tag = listOf("Wow", "Wow", "Wow", "Wow", "Wow")
 
+        val hotTags = ArrayList<String>()
+        hotTags.addAll(tag)
 
         findViewById(R.id.add_tag).setOnClickListener {
             searchView.setTagText("Android tutorials")
@@ -23,9 +27,11 @@ class MainActivity : AppCompatActivity() {
                 .apply {
                     setTagColor(ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
                     setTagText("mango")
-                    setTagRadius(20.0f)
-                    setSearchBarRadius(20.0f)
+                    setTagRadius(10.0f)
+                    setSearchBarRadius(10.0f)
                     setSearchHint("Wow")
+                    addTags(hotTags)
+                    setTagTitle("Hot")
                 }
                 .addCallbacks(
                         {}, {}, {}, {}, {}
