@@ -33,21 +33,6 @@ class TagSearch @JvmOverloads constructor(
 ) : CardView(context, attrs, defStyleAttr), TextWatcher {
 
 
-    override fun afterTextChanged(s: Editable?) {
-        if (s?.isNotEmpty()!!) {
-            mCancelButton?.visibility = VISIBLE
-        } else {
-            mCancelButton?.visibility = GONE
-        }
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-    }
-
     //Views
     var mSelectedTag: TextView? = null
     var mSearchViewEditText: EditText? = null
@@ -131,20 +116,11 @@ class TagSearch @JvmOverloads constructor(
                     SpacingItemDecoration(resources.getDimensionPixelOffset(R.dimen.item_space), resources.getDimensionPixelOffset(R.dimen.item_space)))
 
             ChipsLayoutManager.newBuilder(context)
-                    //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
                     .setChildGravity(Gravity.CENTER)
-                    //whether RecyclerView can scroll. TRUE by default
                     .setScrollingEnabled(true)
-                    //set maximum views count in a particular row
                     .setMaxViewsInRow(10)
-                    //set gravity resolver where you can determine gravity for item in position.
-                    //This method have priority over previous one
                     .setGravityResolver { Gravity.CENTER }
-                    //you are able to break row due to your conditions. Row breaker should return true for that views
-                    //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL. HORIZONTAL by default
                     .setOrientation(ChipsLayoutManager.HORIZONTAL)
-                    // row strategy for views in completed row, could be STRATEGY_DEFAULT, STRATEGY_FILL_VIEW,
-                    //STRATEGY_FILL_SPACE or STRATEGY_CENTER
                     .setRowStrategy(ChipsLayoutManager.STRATEGY_FILL_VIEW)
                     .build().let {
                 this?.layoutManager = it
@@ -278,6 +254,22 @@ class TagSearch @JvmOverloads constructor(
                 .beginDelayedTransition(
                         innerArea,
                         changeBounds)
+    }
+
+
+    override fun afterTextChanged(s: Editable?) {
+        if (s?.isNotEmpty()!!) {
+            mCancelButton?.visibility = VISIBLE
+        } else {
+            mCancelButton?.visibility = GONE
+        }
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
 
 }

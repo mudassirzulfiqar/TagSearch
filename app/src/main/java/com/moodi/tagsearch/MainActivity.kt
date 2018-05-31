@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         val searchView = findViewById(R.id.search) as TagSearch
 
-        val tag = listOf("Wow", "Wow", "Wow", "Wow", "Wow")
+        val tag = listOf("Sports", "Education", "Debate", "Earth Quack")
 
         val hotTags = ArrayList<String>()
         hotTags.addAll(tag)
@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         searchView
                 .apply {
-                    setTagColor(ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
+                    setTagColor(
+                            ContextCompat.getColor(this@MainActivity, R.color.colorAccent))
                     setTagText("mango")
                     setTagRadius(10.0f)
                     setSearchBarRadius(10.0f)
